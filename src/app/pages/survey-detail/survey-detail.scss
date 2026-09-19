@@ -1,0 +1,15 @@
+@use '../../../styles/index' as *;
+@use '../../../styles/buttons';
+
+:host {
+  display: block;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: $medium-space $big-space;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

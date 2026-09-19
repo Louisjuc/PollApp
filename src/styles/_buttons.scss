@@ -1,12 +1,25 @@
 @use 'variables' as *;
 
 button {
-  background-color: $main-yellow;
+  background-color: $secondary-yellow;
   color: $primary-purple;
   padding: $small-space;
   border-radius: 10px;
   font-weight: 700;
   border: none;
+  transition:
+    background-color 0.4s ease,
+    padding 0.4s ease,
+    background-position 0.4s ease;
+  background-image: url('/assets/icons/add_circle.svg');
+  background-repeat: no-repeat;
+  background-position: right -30px center;
+
+  &:hover {
+    background-color: $main-yellow;
+    background-position: right 15px center;
+    padding: $small-space 50px $small-space $small-space;
+  }
 }
 
 .filter-button {
