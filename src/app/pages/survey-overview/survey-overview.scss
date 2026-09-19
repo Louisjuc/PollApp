@@ -1,0 +1,102 @@
+@use '../../../styles/index' as *;
+@use '../../../styles/buttons';
+
+:host {
+  display: block;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: $medium-space $big-space;
+  background-color: $primary-purple;
+  color: $white;
+}
+
+h2 {
+  font-family: 'Nerko One', sans-serif;
+  color: $main-yellow;
+  font-size: $medium-font;
+  text-align: center;
+}
+
+.content-wrapper {
+  padding: 0 $big-space;
+}
+
+.ending-title {
+  font-size: 32px;
+}
+
+.survey-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-height: 600px;
+  gap: 1rem;
+  overflow-y: auto;
+  scrollbar-color: $main-yellow transparent;
+}
+
+.survey-ending-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.surveycard {
+  background-color: $card-bg;
+  padding: 40px 20px;
+  border-radius: 0 80px 0px 0px;
+  padding: $medium-space;
+  width: 300px;
+  display: flex;
+  height: 300px;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #000;
+
+  &:hover {
+    background-color: $light-purple;
+  }
+
+  &_transparent {
+    margin: 20px 0;
+    background-color: $white-transparent;
+    padding: 15px 30px;
+    border-radius: 0 80px 0px 0px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.category {
+  color: $main-yellow;
+}
+
+.category-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.survey-title {
+  font-size: $small-font;
+  font-weight: 700;
+  color: $primary-purple;
+
+  &_transparent {
+    color: #fff;
+    font-size: $small-font;
+    margin: 0;
+  }
+}
+
+.end-count {
+  background-color: $secondary-yellow;
+  font-size: $small-font;
+  padding: 6px 12px;
+  color: $primary-purple;
+  border-radius: 0 20px 0px 0px;
+  width: fit-content;
+  font-size: $xsmall-font;
+  align-self: flex-end;
+}

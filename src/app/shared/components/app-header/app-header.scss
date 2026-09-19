@@ -1,0 +1,27 @@
+@use '../../../../styles/index' as *;
+@use '../../../../styles/buttons';
+
+h1 {
+  font-family: 'Nerko One', sans-serif;
+  color: $main-yellow;
+  font-size: $large-font;
+}
+
+.phone-box {
+  width: 600px;
+  background-image: url('/assets/img/phone.svg');
+  background-size: 400px 400px;
+  background-repeat: no-repeat;
+  transition: background-image 0.3s ease;
+}
+
+.phone-box:hover {
+  background-image: url('/assets/img/phone_hover.svg');
+}
+
+.contentbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+}

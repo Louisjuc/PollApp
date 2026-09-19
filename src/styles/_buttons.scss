@@ -1,0 +1,23 @@
+@use 'variables' as *;
+
+button {
+  background-color: $main-yellow;
+  color: $primary-purple;
+  padding: $small-space;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+}
+
+.filter-button {
+  border-radius: 100px;
+  background-color: rgba(254, 233, 212, 1);
+  font-weight: 400;
+  padding: 4px 8px;
+  margin-right: 20px;
+  border: none;
+
+  &:hover {
+    background-color: $secondary-yellow;
+  }
+}

@@ -8,8 +8,21 @@
 
 # Node
 /node_modules
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.npm/
+.yarn/cache
+.yarn/install-state.gz
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
 
 # IDEs and editors
 .idea/
@@ -19,6 +32,10 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
 
 # Visual Studio Code
 .vscode/*
@@ -28,6 +45,7 @@ yarn-error.log
 !.vscode/extensions.json
 !.vscode/mcp.json
 .history/*
+*.code-workspace
 
 # Miscellaneous
 /.angular/cache
@@ -38,7 +56,32 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+*.log
+*.tsbuildinfo
+.eslintcache
 
-# System files
+# macOS
 .DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
