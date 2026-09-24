@@ -8,8 +8,111 @@
   padding: $medium-space $big-space;
 }
 
+h3 {
+  font-family: 'Nerko One';
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 80px;
+  align-items: baseline;
+}
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.contentbox {
+  background-color: $card-bg;
+  padding: $medium-space;
+  border-radius: 0 80px 0 0;
+  width: 700px;
+}
+
+.formbox {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: $medium-space;
+  margin: 40px 0;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.question {
+  border-radius: 20px;
+  color: $primary-purple;
+
+  h3 {
+    margin: 0;
+  }
+
+  .question-number {
+    margin-right: 4px;
+    opacity: 0.6;
+  }
+
+  .hint {
+    margin: 4px 0 $small-space;
+    font-size: $xsmall-font;
+    opacity: 0.7;
+  }
+}
+
+.answers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infobox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.answer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: $xsmall-space;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    background-color: $secondary-yellow;
+  }
+
+  &.selected {
+    background-color: $secondary-yellow;
+    border-color: $main-yellow;
+  }
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: $primary-purple;
+    cursor: pointer;
+  }
+
+  .letter {
+    flex: 0 0 auto;
+    width: 24px;
+    text-align: center;
+    font-weight: 600;
+    opacity: 0.7;
+  }
 }

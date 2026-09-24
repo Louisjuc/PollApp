@@ -10,6 +10,10 @@
   color: $white;
 }
 
+.ending-title {
+  margin: 0 0 20px 0;
+}
+
 h2 {
   text-align: center;
 }
@@ -89,15 +93,4 @@ h2 {
     font-size: $small-font;
     margin: 0;
   }
-}
-
-.end-count {
-  background-color: $secondary-yellow;
-  font-size: $small-font;
-  padding: 6px 12px;
-  color: $primary-purple;
-  border-radius: 0 20px 0px 0px;
-  width: fit-content;
-  font-size: $xsmall-font;
-  align-self: flex-end;
 }

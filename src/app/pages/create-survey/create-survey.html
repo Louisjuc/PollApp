@@ -1,0 +1,113 @@
+<p class="end-count">Draft</p>
+<header>
+  <h2>Create new survey</h2>
+  <button type="button" class="btn_submit" routerLink="/">Cancel X</button>
+</header>
+
+<form class="survey-form" [formGroup]="form" (ngSubmit)="submit()">
+  <section class="general">
+    <div class="general-left">
+      <div class="field">
+        <label for="name">Survey name</label>
+        <div class="input-row">
+          <input id="name" type="text" formControlName="name" />
+          <button
+            type="button"
+            class="icon-button"
+            (click)="clearField('name')"
+            aria-label="Clear survey name"
+          ></button>
+        </div>
+      </div>
+
+      <div class="date-category">
+        <div class="field">
+          <label for="endDate">Set end date <span class="optional">(optional)</span></label>
+          <div class="input-row">
+            <input id="endDate" type="date" formControlName="endDate" class="input-short" />
+            <button
+              type="button"
+              class="icon-button"
+              (click)="clearField('endDate')"
+              aria-label="Clear end date"
+            ></button>
+          </div>
+        </div>
+
+        <select class="category-select" formControlName="category" aria-label="Choose category">
+          <option value="" disabled>Choose category</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="description">Describing text <span class="optional">(optional)</span></label>
+      <div class="input-row">
+        <textarea id="description" formControlName="description"></textarea>
+        <button
+          type="button"
+          class="icon-button"
+          (click)="clearField('description')"
+          aria-label="Clear description"
+        ></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="questions" formArrayName="questions">
+    @for (question of questions.controls; track question; let qi = $index) {
+      <div class="question" [formGroupName]="qi">
+        <div class="question-head">
+          <label [for]="'question-' + qi">{{ qi + 1 }}. Question</label>
+          <button
+            type="button"
+            class="icon-button"
+            (click)="removeQuestion(qi)"
+            aria-label="Delete question"
+          ></button>
+        </div>
+        <input
+          [id]="'question-' + qi"
+          type="text"
+          formControlName="text"
+          placeholder="Which date would work best for you?"
+        />
+
+        <div class="answers-head">
+          <span class="answers-title">Answers</span>
+          <label class="checkbox">
+            <input type="checkbox" formControlName="multiple" />
+            Allow multiple answers.
+          </label>
+        </div>
+
+        <div formArrayName="answers">
+          @for (answer of answers(qi).controls; track answer; let ai = $index) {
+            <div class="answer-row">
+              <label [for]="'answer-' + qi + '-' + ai">{{ letter(ai) }}.</label>
+              <input [id]="'answer-' + qi + '-' + ai" type="text" [formControlName]="ai" />
+              <button
+                type="button"
+                class="icon-button"
+                (click)="removeAnswer(qi, ai)"
+                aria-label="Delete answer"
+              ></button>
+            </div>
+          }
+        </div>
+
+        <button type="button" class="add-answer" (click)="addAnswer(qi)">
+          Add answer
+          <img src="assets/icons/add_circle.svg" alt="" />
+        </button>
+      </div>
+    }
+
+    <div class="add-question-row" [class.below]="questions.length > 1">
+      <button type="button" class="add-question" (click)="addQuestion()">Add next question</button>
+    </div>
+  </section>
+</form>

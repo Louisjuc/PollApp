@@ -4,6 +4,7 @@ button {
   background-color: $secondary-yellow;
   color: $primary-purple;
   padding: $small-space;
+  margin: 15px 0;
   border-radius: 10px;
   font-weight: 700;
   border: none;
@@ -19,6 +20,17 @@ button {
     background-color: $main-yellow;
     background-position: right 15px center;
     padding: $small-space 50px $small-space $small-space;
+  }
+
+  &.btn_submit {
+    background-image: none;
+
+    &.btn_submit:hover {
+      transition: 0;
+      padding: $small-space;
+      background-position: none;
+      background-color: $main-yellow;
+    }
   }
 }
 

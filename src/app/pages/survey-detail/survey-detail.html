@@ -1,9 +1,50 @@
 <div class="header">
-  <img src="/assets/icons/Logo_dark.svg" alt="PollApp Logo Dark" />
+  <img src="/assets/icons/Logo_dark.svg" alt="PollApp Logo Dark" routerLink="/" />
   <button>Create survey</button>
 </div>
+<div class="content-wrapper">
+  <section class="contentbox">
+    <p class="end-count">Published</p>
+    <div class="infobox">
+      <p>Ends on 01.09.2025</p>
+      <p>Category: Team activities</p>
+    </div>
+    <h2>Let’s Plan the Next Team Event Together</h2>
+    <p>
+      We want to create team activities that everyone will enjoy – share your preferences and ideas
+      in our survey to help us plan better experiences together.
+    </p>
+    <div class="formbox">
+      @for (question of questions; track question.id; let qi = $index) {
+        <div class="question">
+          <h4>
+            <span class="question-number">{{ qi + 1 }}.</span> {{ question.text }}
+          </h4>
+          @if (question.multiple) {
+            <p class="hint">Multiple answers possible</p>
+          }
 
-<section class="contentbox">
-  <p>published</p>
-  <h2>Survey Title</h2>
-</section>
+          <ul class="answers">
+            @for (answer of question.answers; track answer.id; let i = $index) {
+              <li>
+                <label class="answer" [class.selected]="isSelected(question.id, answer.id)">
+                  <input
+                    [type]="question.multiple ? 'checkbox' : 'radio'"
+                    [name]="'question-' + question.id"
+                    [value]="answer.id"
+                    [checked]="isSelected(question.id, answer.id)"
+                    (change)="toggleAnswer(question, answer.id)"
+                  />
+                  <span class="letter">{{ letter(i) }}</span>
+                  <span>{{ answer.text }}</span>
+                </label>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+    <button class="btn_submit" type="submit">Complete Survey</button>
+  </section>
+  <h3>Survey Results<span>LIVE</span></h3>
+</div>
