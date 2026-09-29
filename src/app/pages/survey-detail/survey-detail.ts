@@ -1,81 +1,65 @@
-import { Component, signal } from '@angular/core';
-
-interface Answer {
-  id: number;
-  text: string;
-}
-
-interface Question {
-  id: number;
-  text: string;
-  multiple: boolean;
-  answers: Answer[];
-}
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { QuestionWithOptions, SurveyWithQuestions } from '../../shared/interfaces/survey';
+import { Supabase } from '../../shared/services/supabase';
 
 @Component({
   selector: 'app-survey-detail',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './survey-detail.html',
   styleUrl: './survey-detail.scss',
 })
-export class SurveyDetail {
-  questions: Question[] = [
-    {
-      id: 1,
-      text: 'Which days would work for you?',
-      multiple: true,
-      answers: [
-        { id: 1, text: 'Monday' },
-        { id: 2, text: 'Tuesday' },
-        { id: 3, text: 'Wednesday' },
-        { id: 4, text: 'Thursday' },
-      ],
-    },
-    {
-      id: 2,
-      text: 'What time of day suits you best?',
-      multiple: true,
-      answers: [
-        { id: 1, text: 'Morning' },
-        { id: 2, text: 'Midday' },
-        { id: 3, text: 'Afternoon' },
-        { id: 4, text: 'Evening' },
-      ],
-    },
-    {
-      id: 3,
-      text: 'Which topics should we cover?',
-      multiple: true,
-      answers: [
-        { id: 1, text: 'Project status' },
-        { id: 2, text: 'Roadmap' },
-        { id: 3, text: 'Team feedback' },
-        { id: 4, text: 'Open questions' },
-      ],
-    },
-    {
-      id: 4,
-      text: 'How would you like to join?',
-      multiple: true,
-      answers: [
-        { id: 1, text: 'On site' },
-        { id: 2, text: 'Remote' },
-        { id: 3, text: 'Either works for me' },
-      ],
-    },
-  ];
+export class SurveyDetail implements OnInit {
+  private route = inject(ActivatedRoute);
+  private supabase = inject(Supabase);
+
+  survey = signal<SurveyWithQuestions | null>(null);
+  loading = signal(true);
+  error = signal('');
+  sending = signal(false);
+  voted = signal(false);
 
   selectedAnswers = signal<Record<number, number[]>>({});
 
+  // Abstimmen geht erst, wenn jede Frage mindestens eine Antwort hat
+  allAnswered = computed(() => {
+    const questions = this.survey()?.questions ?? [];
+    return questions.length > 0 && questions.every((q) => (this.selectedAnswers()[q.id] ?? []).length > 0);
+  });
+
+  isEnded = computed(() => {
+    const endDate = this.survey()?.end_date;
+    if (!endDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(`${endDate}T00:00:00`) < today;
+  });
+
+  async ngOnInit() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    try {
+      this.survey.set(await this.supabase.getSurvey(id));
+    } catch {
+      this.error.set('Survey could not be loaded.');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
   letter(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+
+  // "2026-09-30" -> "30.09.2026"
+  formatDate(date: string): string {
+    return date.split('-').reverse().join('.');
   }
 
   isSelected(questionId: number, answerId: number): boolean {
     return (this.selectedAnswers()[questionId] ?? []).includes(answerId);
   }
 
-  toggleAnswer(question: Question, answerId: number): void {
+  toggleAnswer(question: QuestionWithOptions, answerId: number): void {
     this.selectedAnswers.update((selected) => {
       const current = selected[question.id] ?? [];
 
@@ -90,5 +74,18 @@ export class SurveyDetail {
           : [...current, answerId],
       };
     });
+  }
+
+  async submit(): Promise<void> {
+    this.sending.set(true);
+    this.error.set('');
+    try {
+      await this.supabase.vote(Object.values(this.selectedAnswers()).flat());
+      this.voted.set(true);
+    } catch {
+      this.error.set('Your answers could not be saved. Please try again.');
+    } finally {
+      this.sending.set(false);
+    }
   }
 }

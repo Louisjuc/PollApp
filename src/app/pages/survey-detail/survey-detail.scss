@@ -8,20 +8,32 @@
   padding: $medium-space $big-space;
 }
 
-h3 {
+.results {
   font-family: 'Nerko One';
+  font-size: 2rem;
+}
+
+.yellow {
+  color: $main-yellow;
 }
 
 .content-wrapper {
   display: flex;
   gap: 80px;
-  align-items: baseline;
+  align-items: center;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.content_footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .contentbox {
@@ -29,6 +41,7 @@ h3 {
   padding: $medium-space;
   border-radius: 0 80px 0 0;
   width: 700px;
+  position: relative;
 }
 
 .formbox {
@@ -76,6 +89,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 15px 0;
 }
 
 .answer {
@@ -115,4 +129,9 @@ h3 {
     font-weight: 600;
     opacity: 0.7;
   }
+}
+
+.error-text {
+  margin: 0 $small-space 0 0;
+  color: $primary-purple;
 }

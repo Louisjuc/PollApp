@@ -1,47 +1,52 @@
 <app-app-header></app-app-header>
 <h2>Your surveys</h2>
 <section class="content-wrapper">
-  <p class="ending-title">Ending soon surveys</p>
-  <section class="survey-ending-box">
-    <div class="surveycard" routerLink="/survey-detail" role="link">
-      <div>
-        <p>Team activities</p>
-        <h3 class="survey-title">Let’s Plan the Next Team Event Together</h3>
-      </div>
-      <p class="end-count">Ends in 1 Day</p>
-    </div>
-    <div class="surveycard" routerLink="/survey-detail" role="link">
-      <div>
-        <p>Team activities</p>
-        <h3 class="survey-title">Let’s Plan the Next Team Event Together</h3>
-      </div>
-      <p class="end-count">Ends in 1 Day</p>
-    </div>
-    <div class="surveycard" routerLink="/survey-detail" role="link">
-      <div>
-        <p>Team activities</p>
-        <h3 class="survey-title">Let’s Plan the Next Team Event Together</h3>
-      </div>
-      <p class="end-count">Ends in 1 Day</p>
-    </div>
-  </section>
+  @if (loading()) {
+    <p class="info-text">Loading surveys…</p>
+  } @else if (error()) {
+    <p class="info-text">{{ error() }}</p>
+  } @else if (endingSoon().length) {
+    <p class="ending-title">Ending soon surveys</p>
+    <section class="survey-ending-box">
+      @for (survey of endingSoon(); track survey.id) {
+        <div class="surveycard" [routerLink]="['/survey-detail', survey.id]" role="link">
+          <div>
+            <p>{{ survey.category }}</p>
+            <h3 class="survey-title">{{ survey.title }}</h3>
+          </div>
+          <p class="end-count">{{ endsIn(survey) }}</p>
+        </div>
+      }
+    </section>
+  }
   <div class="category-filter">
     <div>
-      <button class="filter-button">Active survey</button>
-      <button class="filter-button">Past survey</button>
+      <button class="filter-button" [class.active]="!showPast()" (click)="showPast.set(false)">Active survey</button>
+      <button class="filter-button" [class.active]="showPast()" (click)="showPast.set(true)">Past survey</button>
     </div>
-    <p>Sort by categories</p>
+    <div class="category-sort">
+      <select class="category-select" (change)="selectCategory($event)" aria-label="Sort by categories">
+        <option value="" disabled selected>Sort by categories</option>
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+      @if (selectedCategory(); as category) {
+        <span class="selected-category">{{ category }}</span>
+      }
+    </div>
   </div>
-  <section class="survey-list">
-    <div class="surveycard_transparent" routerLink="/survey-detail" role="link">
-      <p class="category">Team activities</p>
-      <p class="survey-title_transparent">Let’s Plan the Next Team Event Together</p>
-      <p class="end-count_scnd">Ends in 1 Day</p>
-    </div>
-    <div class="surveycard_transparent" routerLink="/survey-detail" role="link">
-      <p class="category">Team activities</p>
-      <p class="survey-title_transparent">Let’s Plan the Next Team Event Together</p>
-      <p class="end-count_scnd">Ends in 1 Day</p>
-    </div>
-  </section>
+  @if (!loading() && !error()) {
+    <section class="survey-list">
+      @for (survey of listedSurveys(); track survey.id) {
+        <div class="surveycard_transparent" [routerLink]="['/survey-detail', survey.id]" role="link">
+          <p class="category">{{ survey.category }}</p>
+          <p class="survey-title_transparent">{{ survey.title }}</p>
+          <p class="end-count_scnd">{{ endsIn(survey) }}</p>
+        </div>
+      } @empty {
+        <p class="info-text">No surveys found.</p>
+      }
+    </section>
+  }
 </section>

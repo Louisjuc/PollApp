@@ -12,7 +12,7 @@ button {
     background-color 0.4s ease,
     padding 0.4s ease,
     background-position 0.4s ease;
-  background-image: url('/assets/icons/add_circle.svg');
+  background-image: url('/assets/icons/add_circle_purple.svg');
   background-repeat: no-repeat;
   background-position: right -30px center;
 
@@ -21,16 +21,17 @@ button {
     background-position: right 15px center;
     padding: $small-space 50px $small-space $small-space;
   }
+}
 
-  &.btn_submit {
-    background-image: none;
+.btn_submit {
+  background-image: none;
+  background-color: $secondary-yellow;
 
-    &.btn_submit:hover {
-      transition: 0;
-      padding: $small-space;
-      background-position: none;
-      background-color: $main-yellow;
-    }
+  &.btn_submit:hover {
+    transition: 0;
+    padding: $small-space;
+    background-position: none;
+    background-color: $main-yellow;
   }
 }
 
@@ -41,8 +42,10 @@ button {
   padding: 4px 8px;
   margin-right: 20px;
   border: none;
+  background-image: none;
 
   &:hover {
     background-color: $secondary-yellow;
+    padding: 4px 8px;
   }
 }

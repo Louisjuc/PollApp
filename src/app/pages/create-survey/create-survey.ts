@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Supabase } from '../../shared/services/supabase';
 
 type AnswerForm = FormControl<string>;
 
@@ -18,6 +19,11 @@ type QuestionForm = FormGroup<{
 })
 export class CreateSurvey {
   private fb = inject(FormBuilder).nonNullable;
+  private supabase = inject(Supabase);
+  private router = inject(Router);
+
+  saving = signal(false);
+  error = signal('');
 
   categories = ['Team activities', 'Health & Wellness', 'Gaming & Entertainment', 'Education & Learning', 'Lifestyle & Preferences', 'Technology & Innovation'];
 
@@ -45,6 +51,13 @@ export class CreateSurvey {
     this.form.controls[field].reset();
   }
 
+  selectCategory(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.form.controls.category.setValue(select.value);
+    this.form.controls.category.markAsTouched();
+    select.value = '';
+  }
+
   addQuestion(): void {
     this.questions.push(this.createQuestion());
   }
@@ -70,12 +83,21 @@ export class CreateSurvey {
     }
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    console.log(this.form.getRawValue());
+    this.saving.set(true);
+    this.error.set('');
+    try {
+      await this.supabase.createSurvey(this.form.getRawValue());
+      this.router.navigate(['/']);
+    } catch {
+      this.error.set('Survey could not be saved. Please try again.');
+    } finally {
+      this.saving.set(false);
+    }
   }
 
   private createQuestion(): QuestionForm {
