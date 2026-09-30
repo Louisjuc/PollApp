@@ -27,6 +27,23 @@ export class SurveyDetail implements OnInit {
     return questions.length > 0 && questions.every((q) => (this.selectedAnswers()[q.id] ?? []).length > 0);
   });
 
+  // Ergebnisse je Frage: Anteil jeder Antwort an allen Stimmen der Frage in Prozent
+  results = computed(() =>
+    (this.survey()?.questions ?? []).map((question) => {
+      const counts = question.options.map((option) => option.votes[0]?.count ?? 0);
+      const total = counts.reduce((sum, count) => sum + count, 0);
+      return {
+        id: question.id,
+        text: question.text,
+        total,
+        options: question.options.map((option, i) => ({
+          id: option.id,
+          percent: total ? Math.round((counts[i] / total) * 100) : 0,
+        })),
+      };
+    }),
+  );
+
   isEnded = computed(() => {
     const endDate = this.survey()?.end_date;
     if (!endDate) return false;
@@ -82,6 +99,7 @@ export class SurveyDetail implements OnInit {
     try {
       await this.supabase.vote(Object.values(this.selectedAnswers()).flat());
       this.voted.set(true);
+      this.survey.set(await this.supabase.getSurvey(this.survey()!.id));
     } catch {
       this.error.set('Your answers could not be saved. Please try again.');
     } finally {

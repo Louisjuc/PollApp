@@ -2,6 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Supabase } from '../../shared/services/supabase';
+import { Toast } from '../../shared/services/toast';
+import { ToastMessage } from '../../shared/components/toast/toast';
 
 type AnswerForm = FormControl<string>;
 
@@ -13,7 +15,7 @@ type QuestionForm = FormGroup<{
 
 @Component({
   selector: 'app-create-survey',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, ToastMessage],
   templateUrl: './create-survey.html',
   styleUrl: './create-survey.scss',
 })
@@ -21,6 +23,7 @@ export class CreateSurvey {
   private fb = inject(FormBuilder).nonNullable;
   private supabase = inject(Supabase);
   private router = inject(Router);
+  private toast = inject(Toast);
 
   saving = signal(false);
   error = signal('');
@@ -92,6 +95,7 @@ export class CreateSurvey {
     this.error.set('');
     try {
       await this.supabase.createSurvey(this.form.getRawValue());
+      await this.toast.show('Your survey is now published');
       this.router.navigate(['/']);
     } catch {
       this.error.set('Survey could not be saved. Please try again.');

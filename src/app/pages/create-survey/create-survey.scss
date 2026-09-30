@@ -330,6 +330,12 @@ textarea {
   justify-content: flex-end;
   gap: $small-space;
   margin-top: 40px;
+  overflow-x: clip;
+
+  .btn_submit {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .error-text {

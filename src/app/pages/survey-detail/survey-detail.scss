@@ -9,8 +9,78 @@
 }
 
 .results {
-  font-family: 'Nerko One';
-  font-size: 2rem;
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: $medium-space;
+
+  h3 {
+    margin: 0;
+    font-family: 'Nerko One';
+    font-size: 2rem;
+  }
+}
+
+.result {
+  h4 {
+    margin: 0 0 $small-space;
+  }
+
+  .question-number {
+    margin-right: 4px;
+    opacity: 0.6;
+  }
+
+  .hint {
+    margin: $xsmall-space 0 0;
+    font-size: $xsmall-font;
+    opacity: 0.7;
+  }
+}
+
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .letter {
+    width: 24px;
+    text-align: center;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  .percent {
+    width: 48px;
+    text-align: right;
+    font-weight: 600;
+    color: $main-yellow;
+  }
+}
+
+.bar-track {
+  flex: 1;
+  height: 10px;
+  border-radius: 0px 0px 5px 5px;
+  background-color: $light-purple;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background-color: $main-yellow;
+  border-radius: 10px;
+  transition: width 0.6s ease;
 }
 
 .yellow {
@@ -20,7 +90,7 @@
 .content-wrapper {
   display: flex;
   gap: 80px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .header {

@@ -70,5 +70,28 @@
   } @else {
     <p>{{ error() }}</p>
   }
-  <h3 class="results">Survey Results <span class="yellow">LIVE</span></h3>
+  @if (survey()) {
+    <section class="results">
+      <h3>Survey Results <span class="yellow">LIVE</span></h3>
+      @for (result of results(); track result.id; let qi = $index) {
+        <div class="result">
+          <h4>
+            <span class="question-number">{{ qi + 1 }}.</span> {{ result.text }}
+          </h4>
+          <ul class="bars">
+            @for (option of result.options; track option.id; let i = $index) {
+              <li class="bar-row">
+                <span class="letter">{{ letter(i) }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="option.percent"></div>
+                </div>
+                <span class="percent">{{ option.percent }}%</span>
+              </li>
+            }
+          </ul>
+          <p class="hint">{{ result.total }} {{ result.total === 1 ? 'vote' : 'votes' }}</p>
+        </div>
+      }
+    </section>
+  }
 </div>

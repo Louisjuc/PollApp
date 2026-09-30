@@ -19,8 +19,10 @@ button {
   &:hover {
     background-color: $main-yellow;
     background-position: right 15px center;
-    padding: $small-space 50px $small-space $small-space;
   }
+}
+.btn_create:hover {
+  padding: $small-space 50px $small-space $small-space;
 }
 
 .btn_submit {
@@ -32,6 +34,19 @@ button {
     padding: $small-space;
     background-position: none;
     background-color: $main-yellow;
+  }
+}
+
+.btn_cancel {
+  background-image: none;
+  background-color: rgba(255, 183, 112, 0.3);
+  transition: 0;
+  color: $white;
+
+  &.btn_submit:hover {
+    padding: none;
+    background-position: none;
+    background-color: $secondary-yellow;
   }
 }
 

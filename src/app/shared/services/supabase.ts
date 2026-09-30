@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 import { NewSurvey, Survey, SurveyWithQuestions } from '../interfaces/survey';
 
+type NewQuestion = NewSurvey['questions'][number];
+
 @Injectable({ providedIn: 'root' })
 export class Supabase {
   private client = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -41,7 +43,16 @@ export class Supabase {
 
   // Neue Umfrage speichern: erst Umfrage, dann Fragen, dann Antworten
   async createSurvey(form: NewSurvey): Promise<number> {
-    const { data: survey, error } = await this.client
+    const surveyId = await this.insertSurvey(form);
+    for (const [index, question] of form.questions.entries()) {
+      const questionId = await this.insertQuestion(surveyId, question, index + 1);
+      await this.insertOptions(questionId, question.answers);
+    }
+    return surveyId;
+  }
+
+  private async insertSurvey(form: NewSurvey): Promise<number> {
+    const { data, error } = await this.client
       .from('surveys')
       .insert({
         title: form.name,
@@ -52,32 +63,25 @@ export class Supabase {
       .select()
       .single();
     if (error) throw error;
+    return data.id;
+  }
 
-    for (const [index, question] of form.questions.entries()) {
-      const { data: savedQuestion, error: questionError } = await this.client
-        .from('questions')
-        .insert({
-          survey_id: survey.id,
-          text: question.text,
-          multiple: question.multiple,
-          position: index + 1,
-        })
-        .select()
-        .single();
-      if (questionError) throw questionError;
+  private async insertQuestion(surveyId: number, question: NewQuestion, position: number): Promise<number> {
+    const { data, error } = await this.client
+      .from('questions')
+      .insert({ survey_id: surveyId, text: question.text, multiple: question.multiple, position })
+      .select()
+      .single();
+    if (error) throw error;
+    return data.id;
+  }
 
-      const { error: optionsError } = await this.client.from('options').insert(
-        question.answers
-          .filter((answer) => answer.trim())
-          .map((text, answerIndex) => ({
-            question_id: savedQuestion.id,
-            text,
-            position: answerIndex + 1,
-          })),
-      );
-      if (optionsError) throw optionsError;
-    }
-
-    return survey.id;
+  // Leere Antworten werden übersprungen
+  private async insertOptions(questionId: number, answers: string[]): Promise<void> {
+    const options = answers
+      .filter((answer) => answer.trim())
+      .map((text, index) => ({ question_id: questionId, text, position: index + 1 }));
+    const { error } = await this.client.from('options').insert(options);
+    if (error) throw error;
   }
 }
