@@ -12,6 +12,7 @@
   min-height: 100vh;
   box-sizing: border-box;
   padding: $big-space;
+  @include content-limit;
   background-color: $primary-purple;
   color: $white;
 }
@@ -70,7 +71,7 @@ h2 {
     background-color: $white-transparent;
     padding: 15px 30px;
     border-radius: 0 80px 0px 0px;
-    width: 550px;
+    width: 500px;
     height: 120px;
     display: flex;
     flex-direction: column;
@@ -87,8 +88,10 @@ h2 {
 
 .category-filter {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: $small-space;
 }
 
 .survey-title {
@@ -187,4 +190,48 @@ h2 {
 
 .info-text {
   font-size: 20px;
+}
+
+// Responsive
+@media (max-width: 1440px) {
+}
+
+@media (max-width: 1024px) {
+  .survey-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding-top: $medium-space;
+    padding-bottom: $medium-space;
+    @include content-limit($small-space);
+  }
+
+  .content-wrapper {
+    padding: 0;
+  }
+
+  .survey-ending-box {
+    flex-direction: column;
+  }
+
+  .surveycard,
+  .surveycard_transparent {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .surveycard_transparent {
+    height: auto;
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .survey-title,
+  .survey-title_transparent {
+    font-size: 22px;
+  }
 }

@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { QuestionWithOptions, SurveyWithQuestions } from '../../shared/interfaces/survey';
 import { Supabase } from '../../shared/services/supabase';
+import { CreateSurveyModal } from '../../shared/services/create-survey-modal';
 
 @Component({
   selector: 'app-survey-detail',
@@ -12,19 +13,22 @@ import { Supabase } from '../../shared/services/supabase';
 export class SurveyDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private supabase = inject(Supabase);
+  protected createSurveyModal = inject(CreateSurveyModal);
 
   survey = signal<SurveyWithQuestions | null>(null);
   loading = signal(true);
   error = signal('');
   sending = signal(false);
-  voted = signal(false);
 
   selectedAnswers = signal<Record<number, number[]>>({});
 
   // Abstimmen geht erst, wenn jede Frage mindestens eine Antwort hat
   allAnswered = computed(() => {
     const questions = this.survey()?.questions ?? [];
-    return questions.length > 0 && questions.every((q) => (this.selectedAnswers()[q.id] ?? []).length > 0);
+    return (
+      questions.length > 0 &&
+      questions.every((q) => (this.selectedAnswers()[q.id] ?? []).length > 0)
+    );
   });
 
   // Ergebnisse je Frage: Anteil jeder Antwort an allen Stimmen der Frage in Prozent
@@ -81,7 +85,7 @@ export class SurveyDetail implements OnInit {
       const current = selected[question.id] ?? [];
 
       if (!question.multiple) {
-        return { ...selected, [question.id]: [answerId] };
+        return { ...selected, [question.id]: current.includes(answerId) ? [] : [answerId] };
       }
 
       return {
@@ -98,7 +102,7 @@ export class SurveyDetail implements OnInit {
     this.error.set('');
     try {
       await this.supabase.vote(Object.values(this.selectedAnswers()).flat());
-      this.voted.set(true);
+      this.selectedAnswers.set({});
       this.survey.set(await this.supabase.getSurvey(this.survey()!.id));
     } catch {
       this.error.set('Your answers could not be saved. Please try again.');

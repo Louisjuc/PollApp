@@ -1,0 +1,7 @@
+@use 'variables' as *;
+
+// Limits content to $max-content-width and centers it, while the background stays full width
+@mixin content-limit($padding: $big-space) {
+  padding-left: max(#{$padding}, calc((100% - #{$max-content-width}) / 2 + #{$padding}));
+  padding-right: max(#{$padding}, calc((100% - #{$max-content-width}) / 2 + #{$padding}));
+}

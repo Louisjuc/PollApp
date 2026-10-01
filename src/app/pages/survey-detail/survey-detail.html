@@ -1,6 +1,6 @@
 <div class="header">
-  <img src="/assets/icons/Logo_dark.svg" alt="PollApp Logo Dark" routerLink="/" role="link" />
-  <button routerLink="/create-survey" role="link">Create survey</button>
+  <img src="assets/icons/Logo_dark.svg" alt="PollApp Logo Dark" routerLink="/" role="link" />
+  <button type="button" class="btn_create" (click)="createSurveyModal.open()">Create survey</button>
 </div>
 <div class="content-wrapper">
   @if (loading()) {
@@ -31,14 +31,16 @@
                 <li>
                   <label class="answer" [class.selected]="isSelected(question.id, answer.id)">
                     <input
-                      [type]="question.multiple ? 'checkbox' : 'radio'"
+                      type="checkbox"
                       [name]="'question-' + question.id"
                       [value]="answer.id"
                       [checked]="isSelected(question.id, answer.id)"
-                      [disabled]="voted() || isEnded()"
+                      [disabled]="isEnded()"
                       (change)="toggleAnswer(question, answer.id)"
                     />
-                    <span class="letter">{{ letter(i) }}</span>
+                    <span class="letter"
+                      ><strong>{{ letter(i) }}.</strong></span
+                    >
                     <span>{{ answer.text }}</span>
                   </label>
                 </li>
@@ -53,9 +55,7 @@
         @if (error()) {
           <p class="error-text">{{ error() }}</p>
         }
-        @if (voted()) {
-          <p>Thank you for your vote!</p>
-        } @else if (!isEnded()) {
+        @if (!isEnded()) {
           <button
             class="btn_submit"
             type="button"
@@ -89,7 +89,6 @@
               </li>
             }
           </ul>
-          <p class="hint">{{ result.total }} {{ result.total === 1 ? 'vote' : 'votes' }}</p>
         </div>
       }
     </section>

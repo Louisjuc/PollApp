@@ -1,8 +1,9 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AppHeader } from '../../shared/components/app-header/app-header';
 import { Survey } from '../../shared/interfaces/survey';
 import { Supabase } from '../../shared/services/supabase';
+import { CreateSurveyModal } from '../../shared/services/create-survey-modal';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
@@ -12,8 +13,9 @@ const DAY_IN_MS = 24 * 60 * 60 * 1000;
   templateUrl: './survey-overview.html',
   styleUrl: './survey-overview.scss',
 })
-export class SurveyOverview implements OnInit {
+export class SurveyOverview {
   private supabase = inject(Supabase);
+  private createSurveyModal = inject(CreateSurveyModal);
 
   categories = ['Team activities', 'Health & Wellness', 'Gaming & Entertainment', 'Education & Learning', 'Lifestyle & Preferences', 'Technology & Innovation'];
   selectedCategory = signal('');
@@ -35,7 +37,15 @@ export class SurveyOverview implements OnInit {
       .filter((survey) => !this.selectedCategory() || survey.category === this.selectedCategory()),
   );
 
-  async ngOnInit() {
+  // Lädt beim Start und erneut, sobald im Modal eine Umfrage veröffentlicht wurde
+  constructor() {
+    effect(() => {
+      this.createSurveyModal.published();
+      untracked(() => this.loadSurveys());
+    });
+  }
+
+  async loadSurveys() {
     try {
       this.surveys.set(await this.supabase.getSurveys());
     } catch {

@@ -38,3 +38,22 @@ h2 {
     align-self: flex-end;
   }
 }
+
+// Responsive
+@media (max-width: 1440px) {
+}
+
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 36px;
+  }
+}

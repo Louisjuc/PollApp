@@ -7,6 +7,15 @@ h1 {
   font-size: $large-font;
 }
 
+// Logo.svg is 1220px wide with empty space on the right; crop it instead of scaling it down
+.logo {
+  display: block;
+  max-width: 100%;
+  height: 50px;
+  object-fit: cover;
+  object-position: left;
+}
+
 .phone-box {
   width: 600px;
   background-image: url('/assets/img/phone.svg');
@@ -25,4 +34,40 @@ h1 {
   justify-content: center;
   gap: 1rem;
   height: 450px;
+}
+
+// Responsive
+@media (max-width: 1440px) {
+}
+
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 56px;
+  }
+
+  .contentbox {
+    display: inherit;
+    height: auto;
+  }
+
+  .phone-box {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    background-size: contain;
+    background-position: center;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 44px;
+  }
+
+  .phone-box {
+    height: 300px;
+  }
 }

@@ -6,6 +6,7 @@
   min-height: 100vh;
   box-sizing: border-box;
   padding: $medium-space $big-space;
+  @include content-limit;
 }
 
 .results {
@@ -111,6 +112,8 @@
   padding: $medium-space;
   border-radius: 0 80px 0 0;
   width: 700px;
+  max-width: 100%;
+  box-sizing: border-box;
   position: relative;
 }
 
@@ -148,7 +151,7 @@
 
 .answers {
   list-style: none;
-  margin: 0;
+  margin: 20px 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -166,7 +169,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: $xsmall-space;
+
+  padding: 3px;
   border-radius: 10px;
   border: 2px solid transparent;
   cursor: pointer;
@@ -175,7 +179,7 @@
     border-color 0.2s ease;
 
   &:hover {
-    background-color: $secondary-yellow;
+    background-color: $secondary-light;
   }
 
   &.selected {
@@ -183,12 +187,12 @@
     border-color: $main-yellow;
   }
 
-  input[type='checkbox'],
-  input[type='radio'] {
-    width: 20px;
-    height: 20px;
+  input[type='checkbox'] {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
     margin: 0;
-    accent-color: $primary-purple;
+    accent-color: $main-yellow;
     cursor: pointer;
   }
 
@@ -204,4 +208,28 @@
 .error-text {
   margin: 0 $small-space 0 0;
   color: $primary-purple;
+}
+
+// Responsive
+@media (max-width: 1440px) {
+}
+
+@media (max-width: 1024px) {
+  .content-wrapper {
+    flex-direction: column;
+    gap: $medium-space;
+  }
+
+  .results {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    @include content-limit($small-space);
+  }
+}
+
+@media (max-width: 480px) {
 }
