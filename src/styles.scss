@@ -19,7 +19,6 @@ h2 {
 
 .end-count {
   background-color: $secondary-yellow;
-  font-size: $small-font;
   padding: 6px 12px;
   color: $primary-purple;
   border-radius: 0 20px 0px 0px;
@@ -28,7 +27,6 @@ h2 {
 
   &_scnd {
     background-color: $secondary-yellow;
-    font-size: $small-font;
     padding: 6px 12px;
     margin: 30px 0;
     color: $primary-purple;
@@ -40,12 +38,6 @@ h2 {
 }
 
 // Responsive
-@media (max-width: 1440px) {
-}
-
-@media (max-width: 1024px) {
-}
-
 @media (max-width: 768px) {
   h2 {
     font-size: 44px;

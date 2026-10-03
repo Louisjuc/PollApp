@@ -1,5 +1,10 @@
 <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="create-survey-title">
-  <p class="end-count">Draft</p>
+  <div class="mobile-header">
+    <p class="end-count">Draft</p>
+    <button type="button" class="btn_cancel_mobile" (click)="close()">
+      <img src="assets/icons/close.svg" alt="Cancel" />
+    </button>
+  </div>
   <header>
     <h2 id="create-survey-title">Create new survey</h2>
     <button type="button" class="btn_cancel" (click)="close()">
@@ -7,7 +12,7 @@
     </button>
   </header>
 
-  <form class="survey-form" [formGroup]="form" (ngSubmit)="submit()">
+  <form id="survey-form" class="survey-form" [formGroup]="form" (ngSubmit)="submit()">
     <section class="general">
       <div class="general-left">
         <div class="field">
@@ -21,6 +26,9 @@
               aria-label="Clear survey name"
             ></button>
           </div>
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p class="field-error" role="alert">Please enter a survey name.</p>
+          }
         </div>
 
         <div class="date-category">
@@ -108,6 +116,9 @@
                   aria-label="Delete answer"
                 ></button>
               </div>
+              @if (answer.invalid && answer.touched) {
+                <p class="field-error field-error_answer" role="alert">Please enter an answer.</p>
+              }
             }
           </div>
 
@@ -136,9 +147,9 @@
       }
     </div>
   </form>
-  <app-toast />
   <footer>
-    <button type="submit" class="btn_submit" [disabled]="saving()">
+    <app-toast />
+    <button type="submit" form="survey-form" class="btn_submit" [disabled]="saving()">
       {{ saving() ? 'Publishing…' : 'Publish' }}
     </button>
   </footer>

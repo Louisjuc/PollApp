@@ -1,4 +1,4 @@
-// Eine Zeile aus der Tabelle "surveys"
+/** A row of the `surveys` table. */
 export interface Survey {
   id: number;
   created_at: string;
@@ -8,7 +8,7 @@ export interface Survey {
   end_date: string | null;
 }
 
-// Eine Zeile aus der Tabelle "questions"
+/** A row of the `questions` table. */
 export interface Question {
   id: number;
   survey_id: number;
@@ -17,7 +17,7 @@ export interface Question {
   position: number;
 }
 
-// Eine Zeile aus der Tabelle "options" (Antwortmöglichkeiten)
+/** A row of the `options` table, i.e. one possible answer to a question. */
 export interface Option {
   id: number;
   question_id: number;
@@ -25,22 +25,22 @@ export interface Option {
   position: number;
 }
 
-// Antwortmöglichkeit inkl. Anzahl der Stimmen
+/** An answer option together with its vote count. */
 export interface OptionWithVotes extends Option {
   votes: { count: number }[];
 }
 
-// Frage inkl. ihrer Antwortmöglichkeiten
+/** A question together with all of its answer options and their votes. */
 export interface QuestionWithOptions extends Question {
   options: OptionWithVotes[];
 }
 
-// Umfrage inkl. aller Fragen und Antworten (für die Detailseite)
+/** A survey with all of its questions, answer options and votes (used on the detail page). */
 export interface SurveyWithQuestions extends Survey {
   questions: QuestionWithOptions[];
 }
 
-// Daten aus dem Formular in Create Survey
+/** The raw values of the create-survey form, before they are saved to the database. */
 export interface NewSurvey {
   name: string;
   description: string;

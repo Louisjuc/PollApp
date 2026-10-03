@@ -32,12 +32,6 @@
     margin-right: 4px;
     opacity: 0.6;
   }
-
-  .hint {
-    margin: $xsmall-space 0 0;
-    font-size: $xsmall-font;
-    opacity: 0.7;
-  }
 }
 
 .bars {
@@ -133,10 +127,6 @@
   border-radius: 20px;
   color: $primary-purple;
 
-  h3 {
-    margin: 0;
-  }
-
   .question-number {
     margin-right: 4px;
     opacity: 0.6;
@@ -179,6 +169,7 @@
     border-color 0.2s ease;
 
   &:hover {
+    cursor: pointer;
     background-color: $secondary-light;
   }
 
@@ -211,9 +202,6 @@
 }
 
 // Responsive
-@media (max-width: 1440px) {
-}
-
 @media (max-width: 1024px) {
   .content-wrapper {
     flex-direction: column;
@@ -229,7 +217,4 @@
   :host {
     @include content-limit($small-space);
   }
-}
-
-@media (max-width: 480px) {
 }

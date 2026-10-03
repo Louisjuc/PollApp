@@ -5,6 +5,13 @@ h1 {
   font-family: 'Nerko One', sans-serif;
   color: $main-yellow;
   font-size: $large-font;
+  line-height: 1em;
+  margin: 0 0 20px 0;
+}
+
+.intro {
+  margin: 40px 0;
+  width: 800px;
 }
 
 // Logo.svg is 1220px wide with empty space on the right; crop it instead of scaling it down
@@ -18,39 +25,52 @@ h1 {
 
 .phone-box {
   width: 600px;
-  background-image: url('/assets/img/phone.svg');
+  background-image: url('../../../../../public/assets/img/phone.svg');
   background-size: 400px 400px;
   background-repeat: no-repeat;
   transition: background-image 0.3s ease;
 }
 
 .phone-box:hover {
-  background-image: url('/assets/img/phone_hover.svg');
+  cursor: pointer;
+  background-image: url('../../../../../public/assets/img/phone_hover.svg');
 }
 
 .contentbox {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 1rem;
+  gap: 3rem;
   height: 450px;
 }
 
 // Responsive
-@media (max-width: 1440px) {
-}
-
-@media (max-width: 1024px) {
-}
-
 @media (max-width: 768px) {
   h1 {
     font-size: 56px;
   }
 
+  // Reihenfolge mobil: Headline, Handy-Bild, Text, Button (mittig)
   .contentbox {
-    display: inherit;
+    flex-direction: column;
     height: auto;
+  }
+
+  .intro {
+    display: contents;
+  }
+
+  .phone-box {
+    order: 1;
+  }
+
+  .intro p {
+    order: 2;
+  }
+
+  .btn_create {
+    order: 3;
+    align-self: center;
   }
 
   .phone-box {
@@ -69,5 +89,9 @@ h1 {
 
   .phone-box {
     height: 300px;
+  }
+
+  .btn_create {
+    margin-bottom: 40px;
   }
 }

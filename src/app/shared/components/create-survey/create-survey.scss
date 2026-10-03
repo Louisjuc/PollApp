@@ -18,13 +18,15 @@ header {
 
 .dialog {
   position: relative;
-  max-width: 1200px;
+
+  max-width: fit-content;
   margin: $medium-space auto;
   box-sizing: border-box;
   padding: $medium-space $big-space;
   background-color: $primary-purple;
   color: $white;
   border-radius: 10px 100px 10px 10px;
+  overflow-x: clip;
 }
 
 .survey-form {
@@ -34,8 +36,17 @@ header {
 }
 
 footer {
+  position: relative;
   display: flex;
   justify-content: flex-end;
+
+  // Toast liegt kurz über dem Publish-Button
+  app-toast {
+    position: absolute;
+    right: -$medium-space;
+    bottom: 15px;
+    z-index: 2;
+  }
 }
 
 label,
@@ -123,6 +134,7 @@ textarea {
   }
 
   &:hover {
+    cursor: pointer;
     padding: 0;
     background-color: $main-yellow;
 
@@ -165,15 +177,12 @@ textarea {
   cursor: pointer;
 
   &:hover {
+    cursor: pointer;
     background-image: select-arrow('M0 0h18L9 10z', $main-yellow);
   }
 
   &:open {
     background-image: select-arrow('M0 10h18L9 0z', $main-yellow);
-  }
-
-  option {
-    color: $primary-purple;
   }
 
   // Customizable select (Chrome/Edge); other browsers fall back to the native list
@@ -199,6 +208,7 @@ textarea {
     padding: 10px $small-space;
     font-size: 18px;
     font-weight: 400;
+    color: $primary-purple;
     cursor: pointer;
 
     &::checkmark {
@@ -211,6 +221,7 @@ textarea {
 
     &:hover,
     &:focus-visible {
+      cursor: pointer;
       background-color: $light-purple;
       outline: none;
       width: fit-content;
@@ -312,6 +323,7 @@ textarea {
   background: none;
 
   &:hover {
+    cursor: pointer;
     padding: 0 0 2px;
     background-color: transparent;
     color: $secondary-yellow;
@@ -326,9 +338,6 @@ textarea {
   background-position: right 15px center;
   background-size: 25px;
   padding: $small-space 50px $small-space $small-space;
-
-  &:hover {
-  }
 }
 
 .form-actions {
@@ -337,12 +346,6 @@ textarea {
   justify-content: flex-end;
   gap: $small-space;
   margin-top: 40px;
-  overflow-x: clip;
-
-  .btn_submit {
-    position: relative;
-    z-index: 1;
-  }
 }
 
 .error-text {
@@ -350,15 +353,116 @@ textarea {
   color: $main-yellow;
 }
 
+.field-error {
+  margin: 0;
+  font-size: 14px;
+  color: $main-yellow;
+
+  &_answer {
+    margin: -4px 0 10px calc(20px + #{$small-space});
+  }
+}
+
 // Responsive
 @media (max-width: 1440px) {
+  .dialog {
+    margin: $medium-space 0px;
+    max-width: 1200px;
+  }
 }
 
 @media (max-width: 1024px) {
+  .dialog {
+    padding: $medium-space;
+  }
+
+  .survey-form {
+    padding: 40px $medium-space 0;
+  }
+
+  .general,
+  .questions {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .general {
+    margin-bottom: 40px;
+  }
 }
 
 @media (max-width: 768px) {
+  .dialog {
+    margin: $small-space;
+    padding: 20px;
+    border-radius: 0px 50px 0px 0px;
+  }
+
+  header {
+    margin-bottom: $medium-space;
+  }
+
+  .survey-form {
+    padding: $medium-space $small-space 0;
+    border-radius: 00px 50px 0px 0px;
+  }
+
+  .date-category {
+    flex-direction: column;
+    gap: $small-space;
+  }
+
+  .input-short {
+    max-width: none;
+  }
+
+  .date-category .field {
+    width: 100%;
+  }
+
+  .btn_cancel {
+    display: none;
+
+    &_mobile {
+      padding: 10px;
+    }
+  }
+
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $medium-space;
+
+    .end-count {
+      font-size: 18px;
+      font-weight: 400;
+      color: $white;
+    }
+  }
 }
 
 @media (max-width: 480px) {
+  .dialog {
+    margin: 0;
+  }
+
+  .survey-form {
+    padding: $medium-space $xsmall-space 0;
+  }
+
+  .answers-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $xsmall-space;
+  }
+
+  .add-answer {
+    margin-left: 0;
+  }
+
+  label,
+  .answers-title {
+    font-size: 18px;
+  }
 }
