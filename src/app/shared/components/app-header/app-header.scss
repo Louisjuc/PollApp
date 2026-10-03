@@ -24,7 +24,7 @@ h1 {
 }
 
 .phone-box {
-  width: 600px;
+  width: 400px;
   background-image: url('../../../../../public/assets/img/phone.svg');
   background-size: 400px 400px;
   background-repeat: no-repeat;
@@ -39,8 +39,7 @@ h1 {
 .contentbox {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  gap: 3rem;
+  justify-content: space-between;
   height: 450px;
 }
 

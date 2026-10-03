@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 import { NewSurvey, Survey, SurveyWithQuestions } from '../interfaces/survey';
 
@@ -52,6 +52,30 @@ export class Supabase {
       .from('votes')
       .insert(optionIds.map((option_id) => ({ option_id })));
     if (error) throw error;
+  }
+
+  /**
+   * Listens for new votes in realtime. Requires Realtime to be enabled for the `votes` table.
+   * @param onVote Called with the answer option id of every newly inserted vote.
+   * @returns The channel; pass it to `unsubscribe` when it is no longer needed.
+   */
+  subscribeToVotes(onVote: (optionId: number) => void): RealtimeChannel {
+    return this.client
+      .channel('votes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'votes' },
+        (payload) => onVote(payload.new['option_id']),
+      )
+      .subscribe();
+  }
+
+  /**
+   * Stops listening on a realtime channel and removes it from the client.
+   * @param channel Channel returned by a subscribe method.
+   */
+  async unsubscribe(channel: RealtimeChannel): Promise<void> {
+    await this.client.removeChannel(channel);
   }
 
   /**

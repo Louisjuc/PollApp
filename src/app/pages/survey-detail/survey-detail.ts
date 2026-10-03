@@ -1,5 +1,6 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { QuestionWithOptions, SurveyWithQuestions } from '../../shared/interfaces/survey';
 import { Supabase } from '../../shared/services/supabase';
 import { CreateSurveyModal } from '../../shared/services/create-survey-modal';
@@ -15,7 +16,7 @@ import { CreateSurveyModal } from '../../shared/services/create-survey-modal';
   templateUrl: './survey-detail.html',
   styleUrl: './survey-detail.scss',
 })
-export class SurveyDetail implements OnInit {
+export class SurveyDetail implements OnInit, OnDestroy {
   /** Current route; provides the survey id from the URL. */
   private route = inject(ActivatedRoute);
 
@@ -36,6 +37,12 @@ export class SurveyDetail implements OnInit {
 
   /** `true` while the votes are being saved. */
   sending = signal(false);
+
+  /** Realtime channel that reports new votes; `undefined` until the survey has been loaded. */
+  private votesChannel?: RealtimeChannel;
+
+  /** `true` once the page has been left; prevents opening the realtime channel afterwards. */
+  private destroyed = false;
 
   /** Selected answer option ids, keyed by question id. */
   selectedAnswers = signal<Record<number, number[]>>({});
@@ -86,11 +93,30 @@ export class SurveyDetail implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     try {
       this.survey.set(await this.supabase.getSurvey(id));
+      if (!this.destroyed) this.votesChannel = this.supabase.subscribeToVotes((optionId) => this.onVote(optionId));
     } catch {
       this.error.set('Survey could not be loaded.');
     } finally {
       this.loading.set(false);
     }
+  }
+
+  /** Stops listening for new votes when the page is left. */
+  ngOnDestroy() {
+    this.destroyed = true;
+    if (this.votesChannel) this.supabase.unsubscribe(this.votesChannel);
+  }
+
+  /**
+   * Reloads the survey if a new vote belongs to one of its answer options,
+   * so the results stay up to date while other users vote.
+   * @param optionId Answer option id of the new vote.
+   */
+  private async onVote(optionId: number): Promise<void> {
+    const survey = this.survey();
+    const belongsToSurvey = survey?.questions.some((q) => q.options.some((o) => o.id === optionId));
+    if (!survey || !belongsToSurvey) return;
+    this.survey.set(await this.supabase.getSurvey(survey.id));
   }
 
   /**
@@ -129,20 +155,22 @@ export class SurveyDetail implements OnInit {
    * @param answerId Id of the clicked answer option.
    */
   toggleAnswer(question: QuestionWithOptions, answerId: number): void {
-    this.selectedAnswers.update((selected) => {
-      const current = selected[question.id] ?? [];
+    this.selectedAnswers.update((selected) => ({
+      ...selected,
+      [question.id]: this.toggledSelection(question, selected[question.id] ?? [], answerId),
+    }));
+  }
 
-      if (!question.multiple) {
-        return { ...selected, [question.id]: current.includes(answerId) ? [] : [answerId] };
-      }
-
-      return {
-        ...selected,
-        [question.id]: current.includes(answerId)
-          ? current.filter((id) => id !== answerId)
-          : [...current, answerId],
-      };
-    });
+  /**
+   * Calculates the new selection of a question after an answer was clicked.
+   * @param question The question the answer belongs to.
+   * @param current Currently selected answer option ids of the question.
+   * @param answerId Id of the clicked answer option.
+   * @returns The updated list of selected answer option ids.
+   */
+  private toggledSelection(question: QuestionWithOptions, current: number[], answerId: number): number[] {
+    if (current.includes(answerId)) return current.filter((id) => id !== answerId);
+    return question.multiple ? [...current, answerId] : [answerId];
   }
 
   /**

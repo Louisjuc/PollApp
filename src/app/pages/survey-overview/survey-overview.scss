@@ -36,8 +36,7 @@ h2 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  gap: 25px;
+  justify-content: space-between;
 }
 
 .surveycard {
@@ -83,6 +82,11 @@ h2 {
   align-items: center;
   justify-content: space-between;
   gap: $small-space;
+
+  // Platz für die ausgewählte Kategorie nur nach unten schaffen
+  &:has(.selected-category) {
+    margin-bottom: 30px;
+  }
 }
 
 .survey-title {
@@ -166,13 +170,14 @@ h2 {
 }
 
 .category-sort {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  position: relative;
 }
 
 .selected-category {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  white-space: nowrap;
   font-size: 18px;
   color: $main-yellow;
 }
@@ -190,18 +195,6 @@ h2 {
   .survey-list {
     grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 768px) {
-  :host {
-    padding-top: $medium-space;
-    padding-bottom: $medium-space;
-    @include content-limit($small-space);
-  }
-
-  .content-wrapper {
-    padding: 0;
-  }
 
   // Ending-soon-Karten als horizontaler Swipe-Slider
   .survey-ending-box {
@@ -217,10 +210,26 @@ h2 {
     }
 
     .surveycard {
-      flex: 0 0 85%;
+      flex: 0 0 300px;
       height: 250px;
       scroll-snap-align: start;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding-top: $medium-space;
+    padding-bottom: $medium-space;
+    @include content-limit($small-space);
+  }
+
+  .content-wrapper {
+    padding: 0;
+  }
+
+  .survey-ending-box .surveycard {
+    flex-basis: 85%;
   }
 
   .surveycard,
