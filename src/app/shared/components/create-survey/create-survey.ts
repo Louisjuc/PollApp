@@ -1,10 +1,10 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Supabase } from '../../services/supabase';
-import { Toast } from '../../services/toast';
-import { ToastMessage } from '../toast/toast';
-import { CreateSurveyModal } from '../../services/create-survey-modal';
+import { Supabase } from '@shared/services/supabase';
+import { Toast } from '@shared/services/toast';
+import { ToastMessage } from '@shared/components/toast/toast';
+import { CreateSurveyModal } from '@shared/services/create-survey-modal';
 
 /** Form control holding the text of one answer. */
 type AnswerForm = FormControl<string>;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
-import { environment } from '../../../environments/environment';
-import { NewSurvey, Survey, SurveyWithQuestions } from '../interfaces/survey';
+import { environment } from '@env/environment';
+import { NewSurvey, Survey, SurveyWithQuestions } from '@shared/interfaces/survey';
 
 /** A single question of the create-survey form. */
 type NewQuestion = NewSurvey['questions'][number];

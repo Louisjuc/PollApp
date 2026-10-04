@@ -1,14 +1,23 @@
 <div class="header">
   <img src="assets/icons/Logo_dark.svg" alt="PollApp Logo Dark" routerLink="/" role="link" />
-  <button type="button" class="btn_create" (click)="createSurveyModal.open()">Create survey</button>
+  <button type="button" class="btn-create" (click)="createSurveyModal.open()">Create survey</button>
 </div>
 <div class="content-wrapper">
   @if (loading()) {
     <p>Loading survey…</p>
   } @else if (survey(); as survey) {
-    <section class="contentbox">
-      <p class="end-count">{{ isEnded() ? 'Ended' : 'Published' }}</p>
-      <div class="infobox">
+    <section class="content-box">
+      <div class="mobile-header">
+        <p class="end-count end-count--publish">{{ isEnded() ? 'Ended' : 'Published' }}</p>
+        <button
+          type="button"
+          class="btn-cancel-mobile btn-cancel-mobile--detail"
+          routerLink="/"
+          role="link"
+          aria-label="Cancel"
+        ></button>
+      </div>
+      <div class="info-box">
         <p>{{ survey.end_date ? 'Ends on ' + formatDate(survey.end_date) : 'No end date' }}</p>
         <p>Category: {{ survey.category }}</p>
       </div>
@@ -16,7 +25,7 @@
       @if (survey.description) {
         <p>{{ survey.description }}</p>
       }
-      <div class="formbox">
+      <div class="form-box">
         @for (question of survey.questions; track question.id; let qi = $index) {
           <div class="question">
             <h4>
@@ -51,13 +60,13 @@
           <p>This survey has no questions yet.</p>
         }
       </div>
-      <div class="content_footer">
+      <div class="content-footer">
         @if (error()) {
           <p class="error-text">{{ error() }}</p>
         }
         @if (!isEnded()) {
           <button
-            class="btn_submit"
+            class="btn-submit"
             type="button"
             [disabled]="!allAnswered() || sending()"
             (click)="submit()"
@@ -72,7 +81,7 @@
   }
   @if (survey()) {
     <section class="results">
-      <h3>Survey Results <span class="yellow">LIVE</span></h3>
+      <h3>Survey Results <span class="highlight">LIVE</span></h3>
       @for (result of results(); track result.id; let qi = $index) {
         <div class="result">
           <h4>

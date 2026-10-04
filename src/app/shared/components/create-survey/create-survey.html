@@ -1,13 +1,11 @@
 <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="create-survey-title">
   <div class="mobile-header">
     <p class="end-count">Draft</p>
-    <button type="button" class="btn_cancel_mobile" (click)="close()">
-      <img src="assets/icons/close.svg" alt="Cancel" />
-    </button>
+    <button type="button" class="btn-cancel-mobile" (click)="close()" aria-label="Cancel"></button>
   </div>
   <header>
     <h2 id="create-survey-title">Create new survey</h2>
-    <button type="button" class="btn_cancel" (click)="close()">
+    <button type="button" class="btn-cancel" (click)="close()">
       Cancel <img src="assets/icons/close.svg" alt="Cancel" />
     </button>
   </header>
@@ -117,7 +115,7 @@
                 ></button>
               </div>
               @if (answer.invalid && answer.touched) {
-                <p class="field-error field-error_answer" role="alert">Please enter an answer.</p>
+                <p class="field-error field-error--answer" role="alert">Please enter an answer.</p>
               }
             }
           </div>
@@ -149,7 +147,7 @@
   </form>
   <footer>
     <app-toast />
-    <button type="submit" form="survey-form" class="btn_submit" [disabled]="saving()">
+    <button type="submit" form="survey-form" class="btn-submit" [disabled]="saving()">
       {{ saving() ? 'Publishing…' : 'Publish' }}
     </button>
   </footer>

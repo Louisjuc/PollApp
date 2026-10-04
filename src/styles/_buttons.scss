@@ -22,12 +22,12 @@ button {
     background-position: right 15px center;
   }
 }
-.btn_create:hover {
+.btn-create:hover {
   cursor: pointer;
   padding: $small-space 50px $small-space $small-space;
 }
 
-.btn_submit {
+.btn-submit {
   background-image: none;
   background-color: $secondary-yellow;
 
@@ -38,8 +38,8 @@ button {
   }
 }
 
-.btn_cancel,
-.btn_cancel_mobile {
+.btn-cancel,
+.btn-cancel-mobile {
   background-image: none;
   background-color: rgba(255, 183, 112, 0.3);
   color: $white;
@@ -48,8 +48,24 @@ button {
   gap: 10px;
 }
 
-.btn_cancel_mobile {
+.btn-cancel-mobile {
   display: none;
+
+  &::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background-color: $white;
+    mask: url('../../public/assets/icons/close.svg') no-repeat center / contain;
+  }
+
+  &--detail {
+    background-color: $secondary-yellow;
+
+    &::before {
+      background-color: $black;
+    }
+  }
 }
 
 .filter-button {
@@ -69,18 +85,19 @@ button {
 }
 
 @media (max-width: 768px) {
-  .btn_cancel_mobile {
+  .btn-cancel-mobile {
     display: flex;
+    padding: 10px;
   }
 
   // Mobil gibt es kein Hover: Icon und Hover-Farbe dauerhaft zeigen
-  .btn_create {
+  .btn-create {
     background-color: $main-yellow;
     background-position: right 15px center;
     padding: $small-space 50px $small-space $small-space;
   }
 
-  .btn_submit {
+  .btn-submit {
     background-color: $main-yellow;
     background-image: url('../../public/assets/icons/check.svg');
     background-position: right 15px center;

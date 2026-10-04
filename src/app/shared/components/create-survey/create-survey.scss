@@ -1,5 +1,5 @@
-@use '../../../../styles/index' as *;
-@use '../../../../styles/buttons';
+@use 'index' as *;
+@use 'buttons';
 
 header {
   display: flex;
@@ -14,6 +14,10 @@ header {
   z-index: 100;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+input[type='checkbox'] {
+  @include custom-checkbox($white);
 }
 
 .dialog {
@@ -358,7 +362,7 @@ textarea {
   font-size: 14px;
   color: $main-yellow;
 
-  &_answer {
+  &--answer {
     margin: -4px 0 10px calc(20px + #{$small-space});
   }
 }
@@ -420,25 +424,8 @@ textarea {
     width: 100%;
   }
 
-  .btn_cancel {
+  .btn-cancel {
     display: none;
-
-    &_mobile {
-      padding: 10px;
-    }
-  }
-
-  .mobile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: $medium-space;
-
-    .end-count {
-      font-size: 18px;
-      font-weight: 400;
-      color: $white;
-    }
   }
 }
 

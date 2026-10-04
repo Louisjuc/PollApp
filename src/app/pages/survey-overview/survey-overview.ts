@@ -1,9 +1,9 @@
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AppHeader } from '../../shared/components/app-header/app-header';
-import { Survey } from '../../shared/interfaces/survey';
-import { Supabase } from '../../shared/services/supabase';
-import { CreateSurveyModal } from '../../shared/services/create-survey-modal';
+import { AppHeader } from '@shared/components/app-header/app-header';
+import { Survey } from '@shared/interfaces/survey';
+import { Supabase } from '@shared/services/supabase';
+import { CreateSurveyModal } from '@shared/services/create-survey-modal';
 
 /** Number of milliseconds in one day. */
 const DAY_IN_MS = 24 * 60 * 60 * 1000;

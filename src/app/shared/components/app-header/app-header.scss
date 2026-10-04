@@ -1,5 +1,5 @@
-@use '../../../../styles/index' as *;
-@use '../../../../styles/buttons';
+@use 'index' as *;
+@use 'buttons';
 
 h1 {
   font-family: 'Nerko One', sans-serif;
@@ -36,7 +36,7 @@ h1 {
   background-image: url('../../../../../public/assets/img/phone_hover.svg');
 }
 
-.contentbox {
+.content-box {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -50,7 +50,7 @@ h1 {
   }
 
   // Reihenfolge mobil: Headline, Handy-Bild, Text, Button (mittig)
-  .contentbox {
+  .content-box {
     flex-direction: column;
     height: auto;
   }
@@ -67,7 +67,7 @@ h1 {
     order: 2;
   }
 
-  .btn_create {
+  .btn-create {
     order: 3;
     align-self: center;
   }
@@ -90,7 +90,7 @@ h1 {
     height: 300px;
   }
 
-  .btn_create {
+  .btn-create {
     margin-bottom: 40px;
   }
 }

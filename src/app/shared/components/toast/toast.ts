@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Toast } from '../../services/toast';
+import { Toast } from '@shared/services/toast';
 
 /**
  * Displays the message of the app-wide {@link Toast} service

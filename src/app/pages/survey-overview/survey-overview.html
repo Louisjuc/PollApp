@@ -9,7 +9,7 @@
     <p class="ending-title">Ending soon surveys</p>
     <section class="survey-ending-box">
       @for (survey of endingSoon(); track survey.id) {
-        <div class="surveycard" [routerLink]="['/survey-detail', survey.id]" role="link">
+        <div class="survey-card" [routerLink]="['/survey-detail', survey.id]" role="link">
           <div>
             <p>{{ survey.category }}</p>
             <h3 class="survey-title">{{ survey.title }}</h3>
@@ -39,10 +39,10 @@
   @if (!loading() && !error()) {
     <section class="survey-list">
       @for (survey of listedSurveys(); track survey.id) {
-        <div class="surveycard_transparent" [routerLink]="['/survey-detail', survey.id]" role="link">
+        <div class="survey-card survey-card--transparent" [routerLink]="['/survey-detail', survey.id]" role="link">
           <p class="category">{{ survey.category }}</p>
-          <p class="survey-title_transparent">{{ survey.title }}</p>
-          <p class="end-count_scnd">{{ endsIn(survey) }}</p>
+          <p class="survey-title survey-title--transparent">{{ survey.title }}</p>
+          <p class="end-count end-count--secondary">{{ endsIn(survey) }}</p>
         </div>
       } @empty {
         <p class="info-text">No surveys found.</p>

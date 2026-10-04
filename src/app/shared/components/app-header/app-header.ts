@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CreateSurveyModal } from '../../services/create-survey-modal';
+import { CreateSurveyModal } from '@shared/services/create-survey-modal';
 
 /**
  * Header of the overview page with the logo link to the start page

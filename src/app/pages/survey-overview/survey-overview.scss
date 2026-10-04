@@ -1,5 +1,5 @@
-@use '../../../styles/index' as *;
-@use '../../../styles/buttons';
+@use 'index' as *;
+@use 'buttons';
 
 :host {
   display: block;
@@ -39,7 +39,7 @@ h2 {
   justify-content: space-between;
 }
 
-.surveycard {
+.survey-card {
   background-color: $card-bg;
   border-radius: 0 80px 0px 0px;
   padding: $medium-space;
@@ -55,20 +55,18 @@ h2 {
     background-color: $light-purple;
   }
 
-  &_transparent {
+  &--transparent {
     margin: 20px 0;
     background-color: $white-transparent;
     padding: 15px 30px;
-    border-radius: 0 80px 0px 0px;
     width: 500px;
     height: 120px;
-    display: flex;
-    flex-direction: column;
-  }
+    justify-content: flex-start;
+    color: inherit;
 
-  &_transparent:hover {
-    cursor: pointer;
-    background-color: rgba(217, 217, 217, 0.16);
+    &:hover {
+      background-color: rgba(217, 217, 217, 0.16);
+    }
   }
 }
 
@@ -94,9 +92,9 @@ h2 {
   font-weight: 700;
   color: $primary-purple;
 
-  &_transparent {
-    color: #fff;
-    font-size: $small-font;
+  &--transparent {
+    color: $white;
+    font-weight: 400;
     margin: 0;
   }
 }
@@ -209,7 +207,7 @@ h2 {
       display: none;
     }
 
-    .surveycard {
+    .survey-card {
       flex: 0 0 300px;
       height: 250px;
       scroll-snap-align: start;
@@ -228,25 +226,23 @@ h2 {
     padding: 0;
   }
 
-  .survey-ending-box .surveycard {
+  .survey-ending-box .survey-card {
     flex-basis: 85%;
   }
 
-  .surveycard,
-  .surveycard_transparent {
+  .survey-card {
     width: 100%;
     box-sizing: border-box;
   }
 
-  .surveycard_transparent {
+  .survey-card--transparent {
     height: auto;
     min-height: 120px;
   }
 }
 
 @media (max-width: 480px) {
-  .survey-title,
-  .survey-title_transparent {
+  .survey-title {
     font-size: 22px;
   }
 }

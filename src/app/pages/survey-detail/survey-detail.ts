@@ -1,9 +1,9 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
-import { QuestionWithOptions, SurveyWithQuestions } from '../../shared/interfaces/survey';
-import { Supabase } from '../../shared/services/supabase';
-import { CreateSurveyModal } from '../../shared/services/create-survey-modal';
+import { QuestionWithOptions, SurveyWithQuestions } from '@shared/interfaces/survey';
+import { Supabase } from '@shared/services/supabase';
+import { CreateSurveyModal } from '@shared/services/create-survey-modal';
 
 /**
  * Detail page of a single survey.
